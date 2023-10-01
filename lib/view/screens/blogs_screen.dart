@@ -1,6 +1,8 @@
 import 'package:blog_rise/services/api/fetch_blog_api.dart';
+import 'package:blog_rise/view/screens/detail_blog_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../utils/constants/routes.dart';
 
 class BlogsScreen extends StatefulWidget {
   const BlogsScreen({super.key});
@@ -49,7 +51,11 @@ class _BlogsScreenState extends State<BlogsScreen> {
                         Expanded(
                           child: TextField(
                             controller: searchController,
-                            onSubmitted: (value) {},
+                            onSubmitted: (value) {
+                              // searchController = searchController.text;
+                              // fNews.searchNews(searchedWord);
+                              // setState(() {});
+                            },
                             decoration: const InputDecoration(
                               enabledBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(
@@ -61,14 +67,24 @@ class _BlogsScreenState extends State<BlogsScreen> {
                           ),
                         ),
                         CupertinoButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            // if (searchText.text.isNotEmpty) {
+                            //   searchedWord = searchText.text;
+
+                            //   setState(() {
+                            //     fNews.searchNews(searchedWord);
+                            //   });
+                            // }
+                          },
                           child: const Icon(
                             Icons.search,
                             color: Colors.blueGrey,
                           ),
                         ),
                         CupertinoButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            // authService.handleSignOut();
+                          },
                           child: Icon(
                             Icons.logout,
                             color: Colors.red.shade800,
@@ -86,7 +102,12 @@ class _BlogsScreenState extends State<BlogsScreen> {
                           return Container(
                             margin: const EdgeInsets.only(bottom: 10.0),
                             child: GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                Routes.instance.push(
+                                    widget: DetailBlogView(
+                                        index: index, blogData: snapshot.data!),
+                                    context: context);
+                              },
                               child: Card(
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
