@@ -12,20 +12,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueGrey),
-        appBarTheme: const AppBarTheme(
-          color: Colors.blueGrey,
-          titleTextStyle: TextStyle(
-            color: Colors.white,
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueGrey),
+          appBarTheme: const AppBarTheme(
+            color: Colors.blueGrey,
+            titleTextStyle: TextStyle(
+              color: Colors.white,
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
           ),
+          useMaterial3: true,
         ),
-        useMaterial3: true,
-      ),
-      home: const BlogsScreen()
-    );
+        home: const BlogsScreen());
   }
 }

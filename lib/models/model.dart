@@ -30,8 +30,8 @@ class BlogElement {
 
   factory BlogElement.fromJson(Map<String, dynamic> json) => BlogElement(
         id: json["id"],
-        imageUrl: json["image_url"],
-        title: json["title"],
+        imageUrl: json["image_url"] ?? "https://www.vhv.rs/dpng/d/553-5531706_dummy-image-image-not-available-hd-png-download.png",
+        title: json["title"] ?? "--",
       );
 
   Map<String, dynamic> toJson() => {
