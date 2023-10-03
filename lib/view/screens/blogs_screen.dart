@@ -1,8 +1,9 @@
-import 'package:blog_rise/services/api/fetch_blog_api.dart';
-import 'package:blog_rise/view/screens/detail_blog_view.dart';
+import 'package:blog_rise/controller/blogs_provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../utils/constants/routes.dart';
+import 'package:provider/provider.dart';
+
+import '../../models/model.dart';
 
 class BlogsScreen extends StatefulWidget {
   const BlogsScreen({super.key});
@@ -13,6 +14,20 @@ class BlogsScreen extends StatefulWidget {
 
 class _BlogsScreenState extends State<BlogsScreen> {
   TextEditingController searchController = TextEditingController();
+  late List<Blogs> blogsList = [];
+
+  void addBlogs() async {
+    final appProvider = context.read<BlogsProvider>();
+    await appProvider.fetchBlogs();
+    blogsList = appProvider.totalBlogsList;
+    // print(blogsList.length);
+  }
+
+  @override
+  void initState() {
+    addBlogs();
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -23,92 +38,62 @@ class _BlogsScreenState extends State<BlogsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final appProvider = context.watch<BlogsProvider>();
+
     return Scaffold(
-      body: FutureBuilder(
-          future: FetchBlogs.fetchBlogs(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-
-            if (snapshot.hasError) {
-              return Center(
-                child: Text("error -> ${snapshot.error.toString()}"),
-              );
-            }
-
-            return SizedBox(
-              height: MediaQuery.of(context).size.height,
+      body: appProvider.isLoading == true
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : SafeArea(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0)
-                    .copyWith(top: 50.0),
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
                 child: Column(
                   children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            controller: searchController,
-                            onSubmitted: (value) {
-                              // searchController = searchController.text;
-                              // fNews.searchNews(searchedWord);
-                              // setState(() {});
-                            },
-                            decoration: const InputDecoration(
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                    width: 2, color: Colors.blueGrey),
-                              ),
-                              hintText: "Search blogs titles",
-                            ),
-                            style: const TextStyle(color: Colors.blueGrey),
-                          ),
-                        ),
-                        CupertinoButton(
-                          onPressed: () {
-                            // if (searchText.text.isNotEmpty) {
-                            //   searchedWord = searchText.text;
-
-                            //   setState(() {
-                            //     fNews.searchNews(searchedWord);
-                            //   });
-                            // }
+                    TextField(
+                      controller: searchController,
+                      onSubmitted: (value) async {
+                        if (value.isEmpty) {
+                          await appProvider.fetchBlogs();
+                          blogsList = appProvider.totalBlogsList;
+                        } else {
+                          await appProvider.fetchSearchedBlogs(value);
+                          blogsList = appProvider.searchedBlogsList;
+                        }
+                      },
+                      decoration: InputDecoration(
+                        suffixIcon: GestureDetector(
+                          onTap: () {
+                            searchController.clear();
                           },
-                          child: const Icon(
-                            Icons.search,
-                            color: Colors.blueGrey,
-                          ),
+                          child: const Icon(Icons.clear),
                         ),
-                        CupertinoButton(
-                          onPressed: () {
-                            // authService.handleSignOut();
-                          },
-                          child: Icon(
-                            Icons.logout,
-                            color: Colors.red.shade800,
-                          ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                              width: 2, color: Colors.blueGrey.shade900),
                         ),
-                      ],
+                        hintText: "Search blogs titles",
+                      ),
+                      style: TextStyle(color: Colors.blueGrey.shade900),
                     ),
+                    const SizedBox(height: 15.0),
                     Expanded(
                       child: ListView.builder(
                         physics: const BouncingScrollPhysics(),
-                        itemCount: snapshot.data!.blogs.length,
                         shrinkWrap: true,
-                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        itemCount: blogsList.length,
                         itemBuilder: (context, index) {
-                          return Container(
-                            margin: const EdgeInsets.only(bottom: 10.0),
+                          return Padding(
+                            padding: const EdgeInsets.all(5.0),
                             child: GestureDetector(
-                              onTap: () {
-                                Routes.instance.push(
-                                    widget: DetailBlogView(
-                                        index: index, blogData: snapshot.data!),
-                                    context: context);
-                              },
+                              onTap: () {},
                               child: Card(
+                                color: Colors.blueGrey.shade200,
+                                shape: const RoundedRectangleBorder(
+                                  side: BorderSide(
+                                    color: Colors.black,
+                                  ),
+                                ),
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 15.0,
@@ -123,8 +108,7 @@ class _BlogsScreenState extends State<BlogsScreen> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            snapshot.data!.blogs[index].title
-                                                .toString(),
+                                            blogsList[index].title!,
                                             style: const TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 20,
@@ -140,8 +124,7 @@ class _BlogsScreenState extends State<BlogsScreen> {
                                       Container(
                                         padding: const EdgeInsets.all(10),
                                         child: Image.network(
-                                          snapshot.data!.blogs[index].imageUrl
-                                              .toString(),
+                                          blogsList[index].imageUrl!,
                                           fit: BoxFit.cover,
                                           width: double.infinity,
                                         ),
@@ -158,8 +141,7 @@ class _BlogsScreenState extends State<BlogsScreen> {
                   ],
                 ),
               ),
-            );
-          }),
+            ),
     );
   }
 }

@@ -32,7 +32,8 @@ class _DetailBlogViewState extends State<DetailBlogView> {
           children: <Widget>[
             Center(
               child: Text(
-                widget.blogData.blogs[widget.index].title,
+              //  widget.blogData.blogs[widget.index].title,
+              "data",
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 35,
@@ -52,7 +53,8 @@ class _DetailBlogViewState extends State<DetailBlogView> {
                   ),
                 ),
                 imageUrl:
-                    widget.blogData.blogs[widget.index].imageUrl.toString(),
+                   // widget.blogData.blogs[widget.index].imageUrl.toString(),
+                   "",
                 imageBuilder: (context, imageProvider) => Container(
                   width: double.infinity,
                   decoration: BoxDecoration(

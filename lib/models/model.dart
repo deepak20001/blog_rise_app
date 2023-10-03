@@ -1,42 +1,48 @@
-import 'dart:convert';
-
-Blog blogFromJson(String str) => Blog.fromJson(json.decode(str));
-String blogToJson(Blog data) => json.encode(data.toJson());
-
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 class Blog {
-  List<BlogElement> blogs;
-  Blog({required this.blogs});
+  List<Blogs>? blogs;
 
-  factory Blog.fromJson(Map<String, dynamic> json) => Blog(
-        blogs: List<BlogElement>.from(
-            json["blogs"].map((x) => BlogElement.fromJson(x))),
-      );
+  Blog({this.blogs});
 
-  Map<String, dynamic> toJson() => {
-        "blogs": List<dynamic>.from(blogs.map((x) => x.toJson())),
-      };
+  Blog.fromJson(Map<String, dynamic> json) {
+    if (json['blogs'] != null) {
+      blogs = <Blogs>[];
+      json['blogs'].forEach((v) {
+        blogs!.add(Blogs.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (blogs != null) {
+      data['blogs'] = blogs!.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
 }
 
-class BlogElement {
-  String id;
-  String imageUrl;
-  String title;
+class Blogs {
+  String? id;
+  String? imageUrl;
+  String? title;
 
-  BlogElement({
-    required this.id,
-    required this.imageUrl,
-    required this.title,
-  });
+  Blogs({this.id, this.imageUrl, this.title});
 
-  factory BlogElement.fromJson(Map<String, dynamic> json) => BlogElement(
-        id: json["id"],
-        imageUrl: json["image_url"] ?? "https://www.vhv.rs/dpng/d/553-5531706_dummy-image-image-not-available-hd-png-download.png",
-        title: json["title"] ?? "--",
-      );
+  Blogs.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    imageUrl = json['image_url'];
+    title = json['title'];
+  }
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "image_url": imageUrl,
-        "title": title,
-      };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['image_url'] = imageUrl;
+    data['title'] = title;
+    return data;
+  }
+
+  // @override
+  // String toString() => 'Blogs(id: $id, imageUrl: $imageUrl, title: $title)';
 }
