@@ -1,9 +1,11 @@
 import 'package:blog_rise/controller/blogs_provider.dart';
+import 'package:blog_rise/view/screens/detail_blog_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/model.dart';
+import '../utils/constants/routes.dart';
 
 class BlogsScreen extends StatefulWidget {
   const BlogsScreen({super.key});
@@ -20,7 +22,6 @@ class _BlogsScreenState extends State<BlogsScreen> {
     final appProvider = context.read<BlogsProvider>();
     await appProvider.fetchBlogs();
     blogsList = appProvider.totalBlogsList;
-    // print(blogsList.length);
   }
 
   @override
@@ -86,7 +87,9 @@ class _BlogsScreenState extends State<BlogsScreen> {
                           return Padding(
                             padding: const EdgeInsets.all(5.0),
                             child: GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                Routes.instance.push(widget: DetailBlogView(blogData: blogsList[index]), context: context);
+                              },
                               child: Card(
                                 color: Colors.blueGrey.shade200,
                                 shape: const RoundedRectangleBorder(

@@ -70,11 +70,11 @@ class BlogsProvider extends ChangeNotifier {
           },
         );
 
-        print("Searched List = ${searchedBlogsList.length}");
+        // print("Searched List = ${searchedBlogsList.length}");
 
-        searchedBlogsList.forEach((element) {
-          print("element title : ${element.title}");
-        });
+        // searchedBlogsList.forEach((element) {
+        //   print("element title : ${element.title}");
+        // });
         isSearchLoading = false;
 
         notifyListeners();
