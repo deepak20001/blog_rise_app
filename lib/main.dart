@@ -1,4 +1,5 @@
 import 'package:blog_rise/controller/blogs_provider.dart';
+import 'package:blog_rise/controller/favourite_blogs_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'view/screens/blogs_screen.dart';
@@ -17,6 +18,9 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (_) => BlogsProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => FavouriteBlogsProvider(),
         ),
       ],
       child: MaterialApp(

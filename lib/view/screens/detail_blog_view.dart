@@ -1,7 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:blog_rise/controller/favourite_blogs_provider.dart';
 import 'package:blog_rise/view/utils/constants/constants.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../models/model.dart';
 
 class DetailBlogView extends StatefulWidget {
@@ -19,6 +21,8 @@ class DetailBlogView extends StatefulWidget {
 class _DetailBlogViewState extends State<DetailBlogView> {
   @override
   Widget build(BuildContext context) {
+    final appProvider = Provider.of<FavouriteBlogsProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 32,
@@ -43,7 +47,7 @@ class _DetailBlogViewState extends State<DetailBlogView> {
                 ),
               ),
               const SizedBox(
-                height: 30,
+                height: 20,
               ),
               ClipRRect(
                 borderRadius: BorderRadius.circular(5),
@@ -55,6 +59,24 @@ class _DetailBlogViewState extends State<DetailBlogView> {
                   ),
                   imageUrl: widget.blogData.imageUrl!,
                   height: 250,
+                ),
+              ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: IconButton(
+                  onPressed: () {
+                    appProvider.toggleFavourites(widget.blogData);
+                  },
+                  icon: appProvider.isExists(widget.blogData)
+                      ? const Icon(
+                          Icons.favorite,
+                          color: Colors.red,
+                          size: 30,
+                        )
+                      : const Icon(
+                          Icons.favorite_outline,
+                          size: 30,
+                        ),
                 ),
               ),
               Text(

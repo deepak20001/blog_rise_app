@@ -24,12 +24,10 @@ class BlogsProvider extends ChangeNotifier {
 
       if (res.statusCode == 200) {
         blog = Blog.fromJson(jsonDecode(res.body));
-        blog!.blogs!.forEach(
-          (element) {
+        for (var element in blog!.blogs!) {
             totalBlogsList.add(element);
-          },
-        );
-        print(totalBlogsList.length);
+          }
+        // print(totalBlogsList.length);
         isLoading = false;
 
         notifyListeners();
@@ -60,15 +58,13 @@ class BlogsProvider extends ChangeNotifier {
 
       if (res.statusCode == 200) {
         blog = Blog.fromJson(jsonDecode(res.body));
-        blog!.blogs!.forEach(
-          (element) {
+        for (var element in blog!.blogs!) {
             if (element.title!
                 .toLowerCase()
                 .startsWith(searchedKeyword.toLowerCase())) {
               searchedBlogsList.add(element);
             }
-          },
-        );
+          }
 
         // print("Searched List = ${searchedBlogsList.length}");
 
