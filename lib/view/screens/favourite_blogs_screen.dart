@@ -4,9 +4,14 @@ import '../../controller/favourite_blogs_provider.dart';
 import '../utils/constants/routes.dart';
 import 'detail_blog_view.dart';
 
-class FavouriteBlogsScreen extends StatelessWidget {
+class FavouriteBlogsScreen extends StatefulWidget {
   const FavouriteBlogsScreen({super.key});
 
+  @override
+  State<FavouriteBlogsScreen> createState() => _FavouriteBlogsScreenState();
+}
+
+class _FavouriteBlogsScreenState extends State<FavouriteBlogsScreen> {
   @override
   Widget build(BuildContext context) {
     final appProvider =

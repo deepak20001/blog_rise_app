@@ -13,10 +13,10 @@ class FavouriteBlogsProvider extends ChangeNotifier {
       favouriteBlogsList.add(soloBlog);
     }
 
-    for (var element in favouriteBlogsList) {
-      print(element.title);
-    }
-    print(favouriteBlogsList.length);
+    // for (var element in favouriteBlogsList) {
+    //   print(element.title);
+    // }
+    // print(favouriteBlogsList.length);
 
     notifyListeners();
   }
