@@ -1,6 +1,6 @@
 import 'package:blog_rise/controller/blogs_provider.dart';
 import 'package:blog_rise/view/screens/detail_blog_view.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:blog_rise/view/screens/favourite_blogs_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -42,6 +42,17 @@ class _BlogsScreenState extends State<BlogsScreen> {
     final appProvider = context.watch<BlogsProvider>();
 
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Routes.instance
+              .push(widget: const FavouriteBlogsScreen(), context: context);
+        },
+        backgroundColor: Colors.blueGrey.shade900,
+        child: const Icon(
+          Icons.favorite,
+          color: Colors.white,
+        ),
+      ),
       body: appProvider.isLoading == true
           ? const Center(
               child: CircularProgressIndicator(),
@@ -88,10 +99,13 @@ class _BlogsScreenState extends State<BlogsScreen> {
                             padding: const EdgeInsets.all(5.0),
                             child: GestureDetector(
                               onTap: () {
-                                Routes.instance.push(widget: DetailBlogView(blogData: blogsList[index]), context: context);
+                                Routes.instance.push(
+                                    widget: DetailBlogView(
+                                        blogData: blogsList[index]),
+                                    context: context);
                               },
                               child: Card(
-                                color: Colors.blueGrey.shade200,
+                                color: Colors.blueGrey.shade100,
                                 shape: const RoundedRectangleBorder(
                                   side: BorderSide(
                                     color: Colors.black,
